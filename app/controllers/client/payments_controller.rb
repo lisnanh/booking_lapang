@@ -1,4 +1,4 @@
-class PaymentsController < ApplicationController
+class Client::PaymentsController < ApplicationController
   before_action :set_payment, only: %i[ show edit update destroy ]
 
   # GET /payments or /payments.json

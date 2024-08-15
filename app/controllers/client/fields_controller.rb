@@ -1,4 +1,4 @@
-class FieldsController < ApplicationController
+class Client::FieldsController < ApplicationController
   before_action :set_field, only: %i[ show edit update destroy ]
 
   # GET /fields or /fields.json
