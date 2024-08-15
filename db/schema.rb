@@ -10,9 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_15_103601) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_15_105246) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bookings", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "field_id", null: false
+    t.datetime "check_in_date"
+    t.datetime "check_out_date"
+    t.decimal "amount"
+    t.integer "booking_status", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["field_id"], name: "index_bookings_on_field_id"
+    t.index ["user_id"], name: "index_bookings_on_user_id"
+  end
 
   create_table "fields", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -29,6 +42,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_15_103601) do
     t.index ["user_id"], name: "index_fields_on_user_id"
   end
 
+  create_table "payments", force: :cascade do |t|
+    t.bigint "booking_id", null: false
+    t.datetime "payment_date"
+    t.decimal "amount"
+    t.integer "payment_status", default: 0, null: false
+    t.integer "payment_method", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["booking_id"], name: "index_payments_on_booking_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -43,5 +67,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_15_103601) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "bookings", "fields"
+  add_foreign_key "bookings", "users"
   add_foreign_key "fields", "users"
+  add_foreign_key "payments", "bookings"
 end
