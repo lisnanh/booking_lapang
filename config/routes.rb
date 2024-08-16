@@ -6,6 +6,10 @@ Rails.application.routes.draw do
   resources :fields
   devise_for :users
 
+  namespace :client do
+    resources :fields, only: [:index, :show] # Adjust actions as needed
+  end
+
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
