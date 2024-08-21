@@ -4,12 +4,20 @@ Rails.application.routes.draw do
   resources :payments
   resources :bookings
   resources :fields
-  devise_for :users
 
+  devise_for :users, controllers: {
+  sessions: 'users/sessions',
+  registrations: 'users/registrations'
+}
+
+  devise_scope :user do
+    get '/users/sign_out', to: 'devise/sessions#destroy'
+  end
+
+  #Client namespace
   namespace :client do
     resources :fields, only: [:index, :show] # Adjust actions as needed
   end
-
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
