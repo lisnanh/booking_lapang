@@ -1,15 +1,79 @@
 <div class="mx-auto md:w-2/3 w-full flex">
   <div class="mx-auto">
     <% if notice.present? %>
-      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice">
+        <%= notice %>
+      </p>
     <% end %>
+    
+    <div class="container mx-auto p-6">
+      <!-- Field Header -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div class="col-span-2">
+        <% if @field.image && @field.image.attached? %>
+          <%= image_tag url_for(@field.image), class: "w-full h-full object-cover" %>
+        <% else %>
+          <p class="text-center text-gray-700">No file attached</p>
+        <% end %>
+       </div>
+        <div>
+          <h1 class="text-3xl font-bold mb-2"><%= @field.name %></h1>
+          <p class="text-lg text-gray-700 mb-4"><%= @field.address %></p>
+          <p class="text-lg text-gray-700 mb-4"><%= @field.city %></p>
+          <div class="text-xl text-gray-900 font-semibold">
+            Rp. <%= (@field.price) %>
+          </div>
+          <%= link_to 'Booking', booking_path(@field), class: "mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700" %>
+        </div>
+      </div>
 
-    <%= render @field %>
+      <!-- Facilities Section -->
+      <div class="mb-6">
+        <h2 class="text-2xl font-semibold mb-2">Fasilitas</h2>
+        <ul class="list-disc list-inside">
+          <li>Masjid</li>
+          <li>Parkir Luas</li>
+          <li>Tiket</li>
+          <li>Wastafel</li>
+        </ul>
+      </div>
 
-    <%= link_to "Edit this field", edit_field_path(@field), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <%= link_to "Back to fields", fields_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <div class="inline-block ml-2">
-      <%= button_to "Destroy this field", @field, method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
+      <!-- Schedule Section -->
+      <div class="mb-6">
+        <h2 class="text-2xl font-semibold mb-2">Pilih Lapangan & Waktu</h2>
+        <div class="p-4 border rounded-lg">
+          <h3 class="text-lg font-semibold">Lapangan Utama</h3>
+          <p>Ketersediaan: 10 slot</p>
+          <%= link_to 'Jadwal Tersedia', field_path(@field), class: "mt-2 inline-block bg-gray-200 text-blue-600 px-4 py-2 rounded-lg hover:bg-gray-300" %>
+        </div>
+      </div>
+
+      <!-- Reschedule & Cancellation Section -->
+      <div class="mb-6">
+        <h2 class="text-2xl font-semibold mb-2">Reschedule & Pembatalan</h2>
+        <p class="text-gray-700">Reservasi tidak dapat dibatalkan dan tidak ada refund.</p>
+      </div>
+
+      <!-- Reviews Section -->
+      <div>
+        <h2 class="text-2xl font-semibold mb-4">Ulasan</h2>
+        <div class="space-y-4">
+          <!-- Example Review 1 -->
+          <div class="p-4 bg-gray-100 rounded-lg">
+            <h4 class="font-semibold">Yuza Nugraha</h4>
+            <p class="text-gray-600">Kebersihan: ⭐⭐⭐⭐⭐</p>
+            <p class="text-gray-600">Kondisi Lapangan: ⭐⭐⭐⭐⭐</p>
+            <p class="text-gray-600">Koneksi: ⭐⭐⭐⭐</p>
+          </div>
+          <!-- Example Review 2 -->
+          <div class="p-4 bg-gray-100 rounded-lg">
+            <h4 class="font-semibold">Akmal Fikron</h4>
+            <p class="text-gray-600">Kebersihan: ⭐⭐⭐⭐</p>
+            <p class="text-gray-600">Kondisi Lapangan: ⭐⭐⭐⭐</p>
+            <p class="text-gray-600">Koneksi: ⭐⭐⭐⭐</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

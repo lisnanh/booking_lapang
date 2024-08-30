@@ -1,24 +1,35 @@
 Rails.application.routes.draw do
+  resources :competitions
+  resources :sparrings
   root "statics#index"
-  resources :dashboards
+  
   resources :payments
   resources :bookings
-  resources :fields
-
+  resources :sparrings
+  resources :competitions
+  
   devise_for :users, controllers: {
-  sessions: 'users/sessions',
+    sessions: 'users/sessions',
   registrations: 'users/registrations'
 }
 
-  devise_scope :user do
+devise_scope :user do
      get '/users/sign_out', to: 'devise/sessions#destroy'
   end
 
   #Client namespace
   namespace :client do
-    resources :fields, only: [:index, :show] # Adjust actions as needed
+    resources :fields, only: [:new, :create, :index, :show]
+    resources :client_fields, only: [:new, :create, :index, :show]
+    resources :dashboards, only: [:show, :index]
+    resources :sparrings, only: [:new, :create, :index, :show]
+    resources :client_sparrings, only: [:new, :create, :index, :show]
+    resources :competitions, only: [:new, :create, :index, :show]
+    resources :client_competitions, only: [:new, :create, :index, :show]
+    
   end
-
+  
+  resources :fields, only: [:show, :index]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
