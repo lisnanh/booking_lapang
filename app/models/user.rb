@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_many :fields 
   has_many :bookings
   has_many :payments, through: :bookings
+  has_many :management_fields
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable

@@ -4,13 +4,12 @@ Rails.application.routes.draw do
   root "statics#index"
   
   resources :payments
-  resources :bookings
   resources :sparrings
   resources :competitions
   
   devise_for :users, controllers: {
     sessions: 'users/sessions',
-  registrations: 'users/registrations'
+    registrations: 'users/registrations'
 }
 
 devise_scope :user do
@@ -19,14 +18,21 @@ devise_scope :user do
 
   #Client namespace
   namespace :client do
-    resources :fields, only: [:new, :create, :index, :show]
+    resources :fields, only: [:new, :create, :index, :show, :edit]
     resources :client_fields, only: [:new, :create, :index, :show]
     resources :dashboards, only: [:show, :index]
-    resources :sparrings, only: [:new, :create, :index, :show]
-    resources :client_sparrings, only: [:new, :create, :index, :show]
-    resources :competitions, only: [:new, :create, :index, :show]
-    resources :client_competitions, only: [:new, :create, :index, :show]
-    
+    resources :management_fields, only: [:index, :new, :create, :edit, :update, :destroy]
+      # resources :sparrings, only: [:new, :create, :index, :show]
+    # resources :client_sparrings, only: [:new, :create, :index, :show]
+    # resources :competitions, only: [:new, :create, :index, :show]
+    # resources :client_competitions, only: [:new, :create, :index, :show]
+    resources :client_bookings, only: [:new, :create, :index, :show]
+    resources :payments, only: [:new, :create]
+    resources :management_fields
+    resources :fields do
+      resources :bookings, only: [:new, :create, :edit, :update, :show]
+      resources :payments, only: [:new, :create]
+    end
   end
   
   resources :fields, only: [:show, :index]

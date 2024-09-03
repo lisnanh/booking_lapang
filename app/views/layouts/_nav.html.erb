@@ -1,28 +1,32 @@
 <nav class="fixed top-0 w-full p-4 z-20" style="background-color: #072243;">
   <div class="container mx-auto flex justify-between items-center">
     <!-- Logo -->
-    <%= link_to image_tag('logo.jpg', alt: 'booking_lapang', class: 'h-12 w-auto ml-14'), root_path %>
+    <%= link_to image_tag('logo.jpg', alt: 'booking_lapang', class: 'h-12 w-auto ml-1'), root_path %>
 
     <!-- Navbar berdasarkan jenis user -->
     <% if current_user.nil? %>
-      <!-- Navbar Umum: Semua opsi -->
+    <!-- Dropdown User before login-->
       <div class="hidden md:flex space-x-6 items-center">
         <%= link_to 'Sewa Lapang', fields_path, class: 'text-white hover:text-gray-200' %>
-        <%= link_to 'Sparring', sparrings_path, class: 'text-white hover:text-gray-200' %>
-        <%= link_to 'Kompetisi', competitions_path, class: 'text-white hover:text-gray-200' %>
-        <%= link_to 'Daftar', new_user_registration_path, class: 'bg-white text-black-600 px-4 py-2 rounded-full hover:bg-gray-200' %>
-        <%= link_to 'Masuk', new_user_session_path, class: 'text-white hover:text-gray-200' %>
-      </div>
+        <div class="relative">
+        <button class="text-white focus:outline-none" id="user-menu-button">
+        <%= image_tag 'user.svg', alt: 'User Icon', class: 'h-8 w-8 rounded-full' %>
+        </button>
+        <div id="user-menu-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl z-20 hidden">
+        <%= link_to 'Daftar', new_user_registration_path, class: 'block px-4 py-2 text-gray-800 hover:bg-gray-100' %>
+        <%= link_to 'Masuk', new_user_session_path, class: 'block px-4 py-2 text-gray-800 hover:bg-gray-100' %>
+        </div>
+        </div>
+      </div>  
 
     <% else %>
       <!-- Navbar Client: Semua opsi + Dropdown User -->
       <div class="hidden md:flex space-x-6 items-center">
         <%= link_to 'Sewa Lapang', client_fields_path, class: 'text-white hover:text-gray-200' %>
-        <%= link_to 'Sparring', client_sparrings_path, class: 'text-white hover:text-gray-200' %>
-        <%= link_to 'Kompetisi', client_competitions_path, class: 'text-white hover:text-gray-200' %>
+        <%= link_to 'Kelola Venue', client_management_fields_path, class: 'text-white hover:text-gray-200' %>
 
-  <!-- Dropdown User -->
-      <div class="relative">
+        <!-- Dropdown User after login-->
+        <div class="relative">
         <button class="text-white focus:outline-none" id="user-menu-button">
           <%= image_tag 'user.svg', alt: 'User Icon', class: 'h-8 w-8 rounded-full' %>
         </button>
@@ -34,15 +38,15 @@
       </div>  
       <% end %>
 
-<!-- Mobile Menu Button -->
-<div class="md:hidden flex items-center">
-<button class="text-white focus:outline-none">
-<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-</svg>
-</button>
-</div>
-</div>
+  <!-- Mobile Menu Button -->
+  <div class="md:hidden flex items-center">
+   <button class="text-white focus:outline-none">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+      </svg>
+    </button>
+  </div>
+  </div>
 </nav>
 
 <script>

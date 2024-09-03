@@ -7,47 +7,24 @@
       <%= image_tag 'plus.png', alt: 'Add Field', class: 'w-12 h-12' %>
     <% end %>
 
-<div class="container mx-auto p-6">
+<div class="container mx-auto p-6 pt-24">
   <div class="text-center mb-8">
     <h1 class="text-3xl font-semibold text-gray-800">Booking Lapangan Online Terbaik</h1>
   </div>
 
-  <!-- Search Bar -->
-  <form action="/fields" method="get" class="flex justify-center mb-4 bg-[#F8F9FA] p-4 rounded-full">
-  
+  <%= form_with url: client_fields_path, method: :get, local: true, class: "flex justify-center mb-4 bg-[#F8F9FA] p-4 rounded-full" do |form| %>
   <!-- Nama Venue -->
-<input type="text" name="query[name]" placeholder="Nama Venue" class="px-4 py-2 border-r border-[#072243] w-1/3 text-[#072243] placeholder-[#072243]" />
+  <%= form.text_field :name, value: params.dig(:query, :name), placeholder: "Nama Venue", class: "px-4 py-2 border-r border-[#072243] w-1/3 text-[#072243] placeholder-[#072243]" %>
 
-<!-- Dropdown untuk Kota -->
-<div class="relative w-1/3">
-  <input type="text" name="query[city]" placeholder="Pilih Kota" class="px-4 py-2 border-r border-[#072243] w-full text-[#072243] placeholder-[#072243]" onclick="toggleDropdown('city-dropdown')" readonly />
-  <div id="city-dropdown" class="absolute left-0 mt-1 w-full bg-white rounded-lg shadow-lg z-20 hidden">
-    <ul>
-      <% @cities.each do |city| %>
-        <li class="block px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer" onclick="selectOption('query[city]', '<%= city %>', 'city-dropdown')"><%= city %></li>
-      <% end %>
-    </ul>
-  </div>
-</div>
+  <!-- Kota -->
+  <%= form.select :city, options_for_select(@cities, params.dig(:query, :city)), { prompt: 'Pilih Kota' }, class: "px-4 py-2 border-r border-[#072243] w-1/3 text-[#072243]" %>
 
-<!-- Dropdown untuk Jenis Lapangan -->
-<div class="relative w-1/3">
-  <input type="text" name="query[field_type]" placeholder="Pilih Jenis Lapangan" class="px-4 py-2 border-r border-[#072243] w-full text-[#072243] placeholder-[#072243]" onclick="toggleDropdown('field-dropdown')" readonly />
-  <div id="field-dropdown" class="absolute left-0 mt-1 w-full bg-white rounded-lg shadow-lg z-20 hidden">
-    <ul>
-      <% @field_types.each do |type| %>
-        <li class="block px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer" onclick="selectOption('query[field_type]', '<%= type %>', 'field-dropdown')"><%= type %></li>
-      <% end %>
-    </ul>
-  </div>
-</div>
+  <!-- Jenis Lapangan -->
+  <%= form.select :field_type, options_for_select(@field_types, params.dig(:query, :field_type)), { prompt: 'Pilih Jenis Lapangan' }, class: "px-4 py-2 border-r border-[#072243] w-1/3 text-[#072243]" %>
 
-<!-- Button Search -->
-<button class="px-4 py-2 bg-[#072243] text-white rounded-full ml-2">
-  <i class="fa-solid fa-magnifying-glass"></i>
-</button>
-
-  </form>
+  <!-- Button Search -->
+  <%= form.submit class: "bg-no-repeat bg-center bg-contain w-8 h-8", style: "background-image: url(#{asset_path('search.svg')}); border: none;" %>
+  <% end %>
 
   <!-- Tampilan Lapangan -->
 <div class="grid grid-cols-3 gap-6">

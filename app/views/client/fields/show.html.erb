@@ -6,26 +6,27 @@
       </p>
     <% end %>
     
-    <div class="container mx-auto p-6">
+    <div class="container mx-auto p-6 pt-24">
       <!-- Field Header -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+      <div class="object-cover rounded-lg gap-6 mb-6">
         <div class="col-span-2">
         <% if @field.image && @field.image.attached? %>
-          <%= image_tag url_for(@field.image), class: "w-full h-full object-cover" %>
+          <%= image_tag url_for(@field.image), class: "flex w-11/12 h-[400px] object-cover rounded-lg item-center" %>
         <% else %>
           <p class="text-center text-gray-700">No file attached</p>
         <% end %>
        </div>
-        <div>
-          <h1 class="text-3xl font-bold mb-2"><%= @field.name %></h1>
-          <p class="text-lg text-gray-700 mb-4"><%= @field.address %></p>
-          <p class="text-lg text-gray-700 mb-4"><%= @field.city %></p>
-          <div class="text-xl text-gray-900 font-semibold">
-            Rp. <%= (@field.price) %>
-          </div>
-          <%= link_to 'Booking', booking_path(@field), class: "mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700" %>
-        </div>
-      </div>
+       </div>
+
+       <div class="mb-6">
+         <h1 class="text-3xl font-bold mb-4"><%= @field.name %></h1>
+         <p class="text-lg text-gray-700 mb-4"><%= @field.address %></p>
+         <p class="text-lg text-gray-700 mb-4"><%= @field.city %></p>
+         <div class="text-xl text-gray-900 font-semibold">
+           Rp. <%= (@field.price) %>
+         </div>
+         <%= link_to 'Booking', new_client_field_booking_path(@field), class: "mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700" %>
+       </div>
 
       <!-- Facilities Section -->
       <div class="mb-6">
