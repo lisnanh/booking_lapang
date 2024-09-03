@@ -1,0 +1,83 @@
+<% if notice.present? %>
+  <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block"><%= notice %></p>
+<% end %>
+
+<div class="container mx-auto p-6 pt-24">
+  <div class="text-center mb-8">
+    <h1 class="text-3xl font-semibold text-gray-800">Booking Lapangan Online Terbaik</h1>
+  </div>
+
+  <!-- Tampilan Lapangan -->
+  <div class="grid grid-cols-3 gap-6">
+    <% @fields.each do |field| %>
+      <div class="border rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow cursor-pointer">
+        <% if user_signed_in? %>
+          <%= link_to client_field_path(field), class: "block" do %>
+            <!-- Gambar Lapangan -->
+            <% if field.image.present? %>
+            <%= image_tag field.image, class: "w-66 h-64 object-cover" %>
+            <% else %>
+            <p class="text-center text-gray-700">No file attached</p>
+            <% end %>
+                    
+            <!-- Informasi Lapangan -->
+            <div class="p-4 bg-white">
+            <!-- Tipe Lapangan -->
+            <p class="text-sm text-[#072243] font-semibold"><%= field.field_type %></p>
+  
+              <!-- Nama Lapangan -->
+              <h2 class="font-semibold text-gray-700 text-lg"><%= field.name %></h2>
+              
+              <!-- Alamat Lapangan -->
+              <p class="text-sm text-gray-500"><%= field.address %></p>
+  
+              <!-- Kota -->
+              <h2 class="text-sm text-gray-500 "><%= field.city %></h2>          
+              
+              <!-- Harga -->
+              <p class="text-sm text-gray-500 mt-2">Mulai Dari <span class="font-semibold"><%= number_to_currency(field.price, unit: "Rp. ") %>/Sesi</span></p>
+              
+            </div>
+          <% end %>
+        <% else %>
+          <a href="javascript:void(0);" onclick="showLoginAlert();" class="block">
+            <!-- Gambar Lapangan -->
+            <% if field.image.present? %>
+            <%= image_tag field.image, class: "w-66 h-64 object-cover" %>
+            <% else %>
+            <p class="text-center text-gray-700">No file attached</p>
+            <% end %>
+                    
+            <!-- Informasi Lapangan -->
+            <div class="p-4 bg-white">
+            <!-- Tipe Lapangan -->
+            <p class="text-sm text-[#072243] font-semibold"><%= field.field_type %></p>
+  
+              <!-- Nama Lapangan -->
+              <h2 class="font-semibold text-gray-700 text-lg"><%= field.name %></h2>
+              
+              <!-- Alamat Lapangan -->
+              <p class="text-sm text-gray-500"><%= field.address %></p>
+  
+              <!-- Kota -->
+              <h2 class="text-sm text-gray-500 "><%= field.city %></h2>          
+              
+              <!-- Harga -->
+              <p class="text-sm text-gray-500 mt-2">Mulai Dari <span class="font-semibold"><%= number_to_currency(field.price, unit: "Rp. ") %>/Sesi</span></p>
+              
+            </div>
+          </a>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  
+  <script>
+    function showLoginAlert() {
+      alert('Anda harus mendaftar atau login terlebih dahulu untuk melihat detail dan menyewa lapangan.');
+    }
+  </script>
+  
+
+</div>
+</div>

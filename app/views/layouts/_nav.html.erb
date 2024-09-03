@@ -1,39 +1,57 @@
-<nav class="fixed top-0 w-full p-4" style="background-color: #072243;">
+<nav class="fixed top-0 w-full p-4 z-20" style="background-color: #072243;">
   <div class="container mx-auto flex justify-between items-center">
     <!-- Logo -->
-    <%= link_to 'booking_lapang', root_path, class: 'text-white font-bold text-xl' %>
+    <%= link_to image_tag('logo.jpg', alt: 'booking_lapang', class: 'h-12 w-auto ml-1'), root_path %>
 
     <!-- Navbar berdasarkan jenis user -->
     <% if current_user.nil? %>
-      <!-- Navbar Umum: Hanya Login dan Sign Up -->
+    <!-- Dropdown User before login-->
       <div class="hidden md:flex space-x-6 items-center">
-        <%= link_to 'Login', new_user_session_path, class: 'text-white hover:text-gray-200' %>
-        <%= link_to 'Sign Up', new_user_registration_path, class: 'bg-white text-black-600 px-4 py-2 rounded-full hover:bg-gray-200' %>
-      </div>
-
-    <% elsif current_user.admin? %>
-      <!-- Navbar Admin: Semua opsi + Profil User -->
-      <div class="hidden md:flex space-x-6 items-center">
-        <%= link_to 'Sewa Lapangan', client_fields_path, class: 'text-white hover:text-gray-200' %>
-        <%= link_to 'Profil', edit_user_registration_path, class: 'text-white hover:text-gray-200' %>
-        <%= link_to 'Logout', destroy_user_session_path, method: :delete, class: 'text-white hover:text-gray-200' %>
-      </div>
+        <%= link_to 'Sewa Lapang', fields_path, class: 'text-white hover:text-gray-200' %>
+        <div class="relative">
+        <button class="text-white focus:outline-none" id="user-menu-button">
+        <%= image_tag 'user.svg', alt: 'User Icon', class: 'h-8 w-8 rounded-full' %>
+        </button>
+        <div id="user-menu-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl z-20 hidden">
+        <%= link_to 'Daftar', new_user_registration_path, class: 'block px-4 py-2 text-gray-800 hover:bg-gray-100' %>
+        <%= link_to 'Masuk', new_user_session_path, class: 'block px-4 py-2 text-gray-800 hover:bg-gray-100' %>
+        </div>
+        </div>
+      </div>  
 
     <% else %>
-      <!-- Navbar Client: Semua opsi -->
+      <!-- Navbar Client: Semua opsi + Dropdown User -->
       <div class="hidden md:flex space-x-6 items-center">
-        <%= link_to 'Sewa Lapangan', client_fields_path, class: 'text-white hover:text-gray-200' %>
-        <%= link_to 'Logout', destroy_user_session_path, method: :delete, class: 'text-white hover:text-gray-200' %>
-      </div>
-    <% end %>
+        <%= link_to 'Sewa Lapang', client_fields_path, class: 'text-white hover:text-gray-200' %>
+        <%= link_to 'Kelola Venue', client_management_fields_path, class: 'text-white hover:text-gray-200' %>
 
-    <!-- Mobile Menu Button -->
-    <div class="md:hidden flex items-center">
-      <button class="text-white focus:outline-none">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-        </svg>
-      </button>
-    </div>
+        <!-- Dropdown User after login-->
+        <div class="relative">
+        <button class="text-white focus:outline-none" id="user-menu-button">
+          <%= image_tag 'user.svg', alt: 'User Icon', class: 'h-8 w-8 rounded-full' %>
+        </button>
+        <div id="user-menu-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl z-20 hidden">
+          <%= link_to 'Profil', edit_user_registration_path, class: 'block px-4 py-2 text-gray-800 hover:bg-gray-100' %>
+          <%= link_to 'Dashboard', client_dashboards_path, class: 'block px-4 py-2 text-gray-800 hover:bg-gray-100' %>
+          <%= link_to 'Logout', destroy_user_session_path, method: :delete, class: 'block px-4 py-2 text-gray-800 hover:bg-gray-100' %>
+        </div>
+      </div>  
+      <% end %>
+
+  <!-- Mobile Menu Button -->
+  <div class="md:hidden flex items-center">
+   <button class="text-white focus:outline-none">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+      </svg>
+    </button>
+  </div>
   </div>
 </nav>
+
+<script>
+document.getElementById('user-menu-button').addEventListener('click', function() {
+    var dropdown = document.getElementById('user-menu-dropdown');
+    dropdown.classList.toggle('hidden');
+  });
+</script>

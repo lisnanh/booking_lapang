@@ -1,13 +1,18 @@
 class Client::DashboardsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_dashboard, only: %i[ show edit update destroy ]
 
   # GET /dashboards or /dashboards.json
   def index
     @dashboards = Dashboard.all
+    puts @dashboards.inspect
   end
 
   # GET /dashboards/1 or /dashboards/1.json
   def show
+    @dashboard = Dashboard.find(params[:id])
+    # Assuming you need user details related to the dashboard
+    @user = @dashboard.user
   end
 
   # GET /dashboards/new
@@ -65,6 +70,6 @@ class Client::DashboardsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def dashboard_params
-      params.fetch(:dashboard, {})
+      params.require(:dashboard).permit(:name, :description, :other_attributes)
     end
 end

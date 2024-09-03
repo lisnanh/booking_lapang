@@ -1,0 +1,2 @@
+module ManagementFieldsHelper
+end

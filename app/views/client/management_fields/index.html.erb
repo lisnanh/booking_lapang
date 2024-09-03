@@ -1,0 +1,23 @@
+<h1>Management Fields for <%= current_user.name %></h1>
+
+<%= link_to 'New Management Field', new_client_management_field_path, class: 'btn btn-primary' %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @management_fields.each do |field| %>
+      <tr>
+        <td><%= field.name %></td>
+        <td>
+          <%= link_to 'Edit', edit_client_management_field_path(field), class: 'btn btn-secondary' %> |
+          <%= link_to 'Delete', client_management_field_path(field), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
