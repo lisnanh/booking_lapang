@@ -8,7 +8,7 @@
           <li><%= error.full_message %></li>
         <% end %>
       </ul>
-    </div>
+    </div> 
   <% end %>
 
   <!-- Nama Lapangan -->
@@ -26,7 +26,7 @@
   <!-- Kota -->
   <div class="mb-4">
     <%= form.label :city, "Kota", class: "block text-gray-700 font-semibold mb-2" %>
-    <%= form.select :city, options_for_select(@cities), { prompt: "Pilih Kota" }, class: "w-full p-2 border rounded-lg" %>
+    <%= form.select :city, options_for_select(@cities || []), { prompt: "Pilih Kota" }, class: "w-full p-2 border rounded-lg" %>
   </div>
 
   <!-- Tipe Lapangan -->

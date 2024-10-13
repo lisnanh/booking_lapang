@@ -1,0 +1,14 @@
+=> 
+[[32m#<Venue:0x00007f015910ab60[0m
+  id: [34m[1m1[0m,
+  name: [31m[1m"[0m[31mDefault Venue[0m[31m[1m"[0m,
+  address: [31m[1m"[0m[31mDefault Address[0m[31m[1m"[0m,
+  city: [36m[1mnil[0m,
+  field_type: [36m[1mnil[0m,
+  price: [36m[1mnil[0m,
+  user_id: [34m[1m1[0m,
+  created_at: Wed, 18 Sep 2024 17:11:03.266589000 UTC +00:00,
+  updated_at: Wed, 18 Sep 2024 17:11:03.266589000 UTC +00:00,
+  description: [36m[1mnil[0m,
+  image: [36m[1mnil[0m,
+  field_types: [][32m>[0m]

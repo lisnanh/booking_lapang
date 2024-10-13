@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_02_154733) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_18_172519) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -91,7 +91,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_02_154733) do
     t.datetime "updated_at", null: false
     t.datetime "date"
     t.integer "booking_id"
+    t.bigint "venue_id", null: false
     t.index ["user_id"], name: "index_fields_on_user_id"
+    t.index ["venue_id"], name: "index_fields_on_venue_id"
   end
 
   create_table "management_fields", force: :cascade do |t|
@@ -112,6 +114,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_02_154733) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["booking_id"], name: "index_payments_on_booking_id"
+  end
+
+  create_table "schedules", force: :cascade do |t|
+    t.bigint "field_id", null: false
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["field_id"], name: "index_schedules_on_field_id"
   end
 
   create_table "sparrings", force: :cascade do |t|
@@ -145,6 +157,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_02_154733) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "venues", force: :cascade do |t|
+    t.string "name"
+    t.string "address"
+    t.string "city"
+    t.string "field_type"
+    t.integer "price"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "description"
+    t.string "image"
+    t.index ["user_id"], name: "index_venues_on_user_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bookings", "fields"
@@ -152,8 +178,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_02_154733) do
   add_foreign_key "competitions", "fields"
   add_foreign_key "competitions", "users"
   add_foreign_key "fields", "users"
+  add_foreign_key "fields", "venues"
   add_foreign_key "management_fields", "users"
   add_foreign_key "payments", "bookings"
+  add_foreign_key "schedules", "fields"
   add_foreign_key "sparrings", "fields"
   add_foreign_key "sparrings", "users"
+  add_foreign_key "venues", "users"
 end

@@ -7,8 +7,6 @@
     <% if current_user.nil? %>
     <!-- Dropdown User before login-->
       <div class="hidden md:flex space-x-6 items-center">
-        <%= link_to 'Sewa Lapang', fields_path, class: 'text-white hover:text-gray-200' %>
-        <div class="relative">
         <button class="text-white focus:outline-none" id="user-menu-button">
         <%= image_tag 'user.svg', alt: 'User Icon', class: 'h-8 w-8 rounded-full' %>
         </button>
@@ -22,8 +20,9 @@
     <% else %>
       <!-- Navbar Client: Semua opsi + Dropdown User -->
       <div class="hidden md:flex space-x-6 items-center">
-        <%= link_to 'Sewa Lapang', client_fields_path, class: 'text-white hover:text-gray-200' %>
-        <%= link_to 'Kelola Venue', client_management_fields_path, class: 'text-white hover:text-gray-200' %>
+      <%= link_to 'Venue', client_venues_path, class: 'text-white hover:text-gray-200' %>  
+      <%= link_to 'Sewa Lapang', client_fields_path, class: 'text-white hover:text-gray-200' %>
+      <%= link_to 'Kelola Venue', client_management_fields_path, class: 'text-white hover:text-gray-200' %>
 
         <!-- Dropdown User after login-->
         <div class="relative">

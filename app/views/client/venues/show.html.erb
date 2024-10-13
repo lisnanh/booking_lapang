@@ -1,0 +1,13 @@
+<h1><%= @venue.name %></h1>
+<p><%= @venue.address %></p>
+
+<h2>Lapangan</h2>
+<% @venue.fields.each do |field| %>
+  <div>
+    <h3><%= @venue.name %></h3>
+    <p>Lantai: </p>
+    <%= link_to 'Manage Schedules', venue_path(@venue) %>
+  </div>
+<% end %>
+
+<%= link_to 'Add New Field', new_client_field_path(venue_id: @venue) %>

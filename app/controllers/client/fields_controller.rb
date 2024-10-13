@@ -50,6 +50,8 @@ class Client::FieldsController < ApplicationController
 
   # GET /fields/1/edit
   def edit
+    @field = Field.find(params[:id])
+    @cities = ["Jakarta", "Bandung", "Surabaya", "Yogyakarta", "Semarang"]
   end
 
   # POST /fields or /fields.json

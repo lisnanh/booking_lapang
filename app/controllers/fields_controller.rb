@@ -4,7 +4,21 @@ class FieldsController < ApplicationController
   # GET /fields or /fields.json
   def index
     @fields = Field.all
-    puts @fields.inspect
+
+    if current_user.present?
+      # Jika user adalah client, hanya tampilkan field yang dimiliki oleh client tersebut
+      @fields = current_user.fields
+    else
+      # Logika untuk user yang tidak login atau bukan client
+    end
+
+    if current_user.id?
+      # Jika user adalah client, hanya tampilkan field yang dimiliki oleh client tersebut
+      @fields = current_user.fields
+    else
+      # Jika user bukan client, tampilkan semua field
+      @fields = Field.all
+    end
 
     if params[:venue_name].present?
       @fields = @fields.where("name ILIKE ?", "%#{params[:venue_name]}%")

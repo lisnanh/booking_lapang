@@ -4,7 +4,7 @@
 
 <div class="container mx-auto p-6 pt-24">
   <div class="text-center mb-8">
-    <h1 class="text-3xl font-semibold text-gray-800">Booking Lapangan Online Terbaik</h1>
+    <h1 class="text-3xl font-semibold text-gray-800">Venue</h1>
   </div>
 
   <!-- Tampilan Lapangan -->
@@ -12,7 +12,7 @@
     <% @fields.each do |field| %>
       <div class="border rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow cursor-pointer">
         <% if user_signed_in? %>
-          <%= link_to client_field_path(field), class: "block" do %>
+          <%= link_to field_path(field), class: "block" do %>
             <!-- Gambar Lapangan -->
             <% if field.image.present? %>
             <%= image_tag field.image, class: "w-66 h-64 object-cover" %>
@@ -64,7 +64,10 @@
               
               <!-- Harga -->
               <p class="text-sm text-gray-500 mt-2">Mulai Dari <span class="font-semibold"><%= number_to_currency(field.price, unit: "Rp. ") %>/Sesi</span></p>
-              
+
+              <%= link_to "Edit", edit_client_field_path(@field), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+              <%= link_to "Edit", edit_client_field_path(@field), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+      
             </div>
           </a>
         <% end %>

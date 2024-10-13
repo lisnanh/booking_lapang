@@ -5,9 +5,8 @@ class User < ApplicationRecord
   has_many :bookings
   has_many :payments, through: :bookings
   has_many :management_fields
+  has_many :venues, dependent: :destroy
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-         
-  
 end
