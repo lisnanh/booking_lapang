@@ -1,13 +1,33 @@
-<h1><%= @venue.name %></h1>
-<p><%= @venue.address %></p>
+<div class="container mx-auto p-6 pt-24">
+  <h1><%= @venue.name %></h1>
+  <p><%= @venue.address %></p>
 
-<h2>Lapangan</h2>
-<% @venue.fields.each do |field| %>
-  <div>
-    <h3><%= @venue.name %></h3>
-    <p>Lantai: </p>
-    <%= link_to 'Manage Schedules', venue_path(@venue) %>
+  <h2>Lapangan</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <% if @fields.present? %>
+      <% @fields.each do |field| %>
+        <div class="border rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow cursor-pointer">
+          <%= link_to client_venue_field_path(@venue, field), class: "block" do %>
+            <% if field.image.present? %>
+              <%= image_tag field.image, class: "w-full h-48 object-cover" %>
+            <% else %>
+              <p class="text-center text-gray-700">No image available</p>
+            <% end %>
+
+            <div class="p-4 bg-white">
+              <p class="text-sm text-[#072243] font-semibold"><%= field.field_type %></p>
+              <h2 class="font-semibold text-gray-700 text-lg"><%= field.name %></h2>
+              <p class="text-sm text-gray-500"><%= field.address %></p>
+              <h2 class="text-sm text-gray-500"><%= field.city %></h2>
+              <p class="text-sm text-gray-500 mt-2">Mulai Dari <span class="font-semibold"><%= number_to_currency(field.price, unit: "Rp. ") %>/Sesi</span></p>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    <% else %>
+      <p class="text-gray-600">Kosong kah?</p>
+    <% end %>
   </div>
-<% end %>
 
-<%= link_to 'Add New Field', new_client_field_path(venue_id: @venue) %>
+  <%= link_to 'Add New Field', new_client_field_path(venue_id: @venue.id), class: "btn btn-primary" %>
+</div>

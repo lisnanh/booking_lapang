@@ -9,7 +9,6 @@ Rails.application.routes.draw do
   resources :sparrings
   resources :competitions
   resources :fields
-  resources :fields, only: [:new, :create, :index, :show, :edit]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   
   devise_for :users, controllers: {
@@ -23,7 +22,6 @@ devise_scope :user do
 
   #Client namespace
   namespace :client do
-    resources :fields, only: [:new, :create, :index, :show, :edit]
     resources :client_fields, only: [:new, :create, :index, :show]
     resources :dashboards, only: [:show, :index]
     resources :management_fields, only: [:index, :new, :create, :edit, :update, :destroy]
@@ -34,7 +32,10 @@ devise_scope :user do
     resources :client_bookings, only: [:new, :create, :index, :show]
     resources :payments, only: [:new, :create]
     resources :management_fields
-    resources :venues
+    resources :venues do
+      resources :fields, only: [:show, :new, :create], module: :client
+    end
+
     resources :fields do
       resources :bookings, only: [:new, :create, :edit, :update, :show]
       resources :payments, only: [:new, :create]

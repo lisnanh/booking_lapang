@@ -1,6 +1,7 @@
 class Client::FieldsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_field, only: %i[ show edit update destroy ]
+  before_action :set_venue
 
   # GET /fields or /fields.json
   def index
@@ -46,6 +47,9 @@ class Client::FieldsController < ApplicationController
   def new
     @field = Field.new
     @cities = ["Jakarta", "Bandung", "Surabaya", "Yogyakarta", "Semarang"] # Contoh kota di Pulau Jawa
+    @field = @venue.fields.build
+    @venue = Venue.find(params[:venue_id]) # Mendapatkan venue yang relevan
+    @field = @venue.fields.new # Membuat field baru untuk venue ini
   end
 
   # GET /fields/1/edit
@@ -57,11 +61,16 @@ class Client::FieldsController < ApplicationController
   # POST /fields or /fields.json
   def create
     @field = Field.new(field_params)
+    @field.venue_id = @venue.id
+    @field = @venue.fields.build(field_params)
     @cities = ["Jakarta", "Bandung", "Surabaya", "Yogyakarta", "Semarang"] # Ini juga perlu jika `create` gagal dan kembali ke `new`
     @field.user_id = current_user.id
+    @venue = Venue.find(params[:venue_id]) # Menemukan venue berdasarkan ID
+    @field = @venue.fields.new(field_params) # Membuat field baru yang terkait dengan venue
+
     respond_to do |format|
       if @field.save
-        format.html { redirect_to client_field_path(@field), notice: 'Field was successfully created.' }
+        format.html { redirect_to client_venue_fields_path(@venue), notice: 'Field was successfully created.' }
         format.json { render :show, status: :created, location: @field }
         return
       else
@@ -103,9 +112,12 @@ class Client::FieldsController < ApplicationController
       end
     end
     
+    def set_venue
+      @venue = Venue.find(params[:venue_id]) # Pastikan venue_id tersedia di params
+    end
 
     # Only allow a list of trusted parameters through.
     def field_params
-      params.require(:field).permit(:name, :address, :date, :city, :image, :field_type, :price, :capacity, :description, :created_at, :updated_at)
+      params.require(:field).permit(:name, :address, :date, :city, :image, :field_type, :price, :capacity, :description, :created_at, :updated_at, :venue_id)
     end
 end

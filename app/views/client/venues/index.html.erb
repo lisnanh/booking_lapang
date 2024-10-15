@@ -32,13 +32,7 @@
   <% @venues.each do |venue| %>
     <div class="border rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow cursor-pointer">
       <%= link_to client_venue_path(venue), class: "block" do %>
-        <!-- Gambar Venue -->
-        <% if venue.image.present? %>
-        <%= image_tag venue.image, class: "w-66 h-64 object-cover" %>
-        <% else %>
-        <p class="text-center text-gray-700">No file attached</p>
-        <% end %>
-                
+                        
         <!-- Informasi Venue -->
         <div class="p-4 bg-white">
         <!-- Nama Venue -->

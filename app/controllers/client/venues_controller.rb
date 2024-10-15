@@ -1,4 +1,5 @@
 class Client::VenuesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_venue, only: %i[show edit update destroy]
 
   # GET /venues or /venues.json
@@ -10,6 +11,8 @@ class Client::VenuesController < ApplicationController
 
   # GET /venues/1 or /venues/1.json
   def show
+    @venue = Venue.find(params[:id])
+    @fields = @venue.fields 
   end
 
   # GET /venues/new
@@ -25,13 +28,7 @@ class Client::VenuesController < ApplicationController
 
   # POST /venues or /venues.json
   def create
-    @venue = Venue.new(venue_params)
-    if @venue.save
-      flash[:notice] = "Venue berhasil didaftarkan!"
-      redirect_to @venue
-    else
-      render :new
-    end
+    @venue = current_user.venues.new(venue_params)
     @cities = ["Jakarta", "Bandung", "Surabaya", "Yogyakarta", "Semarang"]
     @field_types = ['Mini Soccer', 'Futsal']
     
@@ -78,6 +75,6 @@ class Client::VenuesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def venue_params
-    params.require(:venue).permit(:name, :address, :city, :image, :field_type, :price)
+    params.require(:venue).permit(:name, :address, :image, :field_type, :price, :description, :venue_id)
   end
 end
