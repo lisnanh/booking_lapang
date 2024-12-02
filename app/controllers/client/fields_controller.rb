@@ -3,21 +3,17 @@ class Client::FieldsController < ApplicationController
   before_action :set_field, only: %i[ show edit update destroy ]
   before_action :set_venue
 
-  # GET /fields or /fields.json
   def index
     @fields = Field.all
 
-    # Filter by name if present
     if params[:query]&.dig(:name).present?
       @fields = @fields.where('name ILIKE ?', "%#{params[:query][:name]}%")
     end
 
-    # Filter by city if present
     if params[:query]&.dig(:city).present?
       @fields = @fields.where(city: params[:query][:city])
     end
 
-    # Filter by field_type if present
     if params[:query]&.dig(:field_type).present?
       @fields = @fields.where(field_type: params[:query][:field_type])
     end
@@ -25,54 +21,33 @@ class Client::FieldsController < ApplicationController
     @cities = Field.select(:city).where(city: ['Jakarta', 'Bandung', 'Surabaya', 'Yogyakarta', 'Semarang']).distinct.pluck(:city)
     @field_types = ['Mini Soccer', 'Futsal']
     
-      # Logika untuk filter berdasarkan tanggal
-      # Anda perlu menyesuaikan dengan bagaimana field menyimpan data ketersediaan
-      # Pagination logic
-  page = params[:page] || 1
-  per_page = 10
-  @fields = @fields.paginate(page: page, per_page: per_page)
-
-  # Optional: Calculate total number of pages
-  @total_pages = (@fields.size / per_page.to_f).ceil
+    page = params[:page] || 1
+    per_page = 10
+    @fields = @fields.paginate(page: page, per_page: per_page)
+    @total_pages = (@fields.size / per_page.to_f).ceil
   end
 
-  def search
-  end
-  # GET /fields/1 or /fields/1.json
   def show
-   @bookings = @field.bookings
-  end
-
-  # GET /fields/new
-  def new
-    @field = Field.new
-    @cities = ["Jakarta", "Bandung", "Surabaya", "Yogyakarta", "Semarang"] # Contoh kota di Pulau Jawa
-    @field = @venue.fields.build
-    @venue = Venue.find(params[:venue_id]) # Mendapatkan venue yang relevan
-    @field = @venue.fields.new # Membuat field baru untuk venue ini
-  end
-
-  # GET /fields/1/edit
-  def edit
+    @venue = Venue.find(params[:venue_id])  # Pastikan venue_id ada di parameter
     @field = Field.find(params[:id])
+    @bookings = @field.bookings
+  end
+
+  def new
+    @field = @venue.fields.build
     @cities = ["Jakarta", "Bandung", "Surabaya", "Yogyakarta", "Semarang"]
   end
 
-  # POST /fields or /fields.json
   def create
     @field = Field.new(field_params)
-    @field.venue_id = @venue.id
     @field = @venue.fields.build(field_params)
-    @cities = ["Jakarta", "Bandung", "Surabaya", "Yogyakarta", "Semarang"] # Ini juga perlu jika `create` gagal dan kembali ke `new`
+    @cities = ["Jakarta", "Bandung", "Surabaya", "Yogyakarta", "Semarang"]
     @field.user_id = current_user.id
-    @venue = Venue.find(params[:venue_id]) # Menemukan venue berdasarkan ID
-    @field = @venue.fields.new(field_params) # Membuat field baru yang terkait dengan venue
 
     respond_to do |format|
       if @field.save
         format.html { redirect_to client_venue_fields_path(@venue), notice: 'Field was successfully created.' }
         format.json { render :show, status: :created, location: @field }
-        return
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @field.errors, status: :unprocessable_entity }
@@ -80,7 +55,6 @@ class Client::FieldsController < ApplicationController
     end    
   end
 
-  # PATCH/PUT /fields/1 or /fields/1.json
   def update
     respond_to do |format|
       if @field.update(field_params)
@@ -93,10 +67,8 @@ class Client::FieldsController < ApplicationController
     end
   end
 
-  # DELETE /fields/1 or /fields/1.json
   def destroy
     @field.destroy!
-
     respond_to do |format|
       format.html { redirect_to client_fields_url, notice: "Field was successfully destroyed." }
       format.json { head :no_content }
@@ -104,8 +76,8 @@ class Client::FieldsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_field
+      @field = Field.find(params[:id])
       @field = Field.find_by(id: params[:id])
       if @field.nil?
         redirect_to client_fields_path, alert: "Field not found"
@@ -113,11 +85,13 @@ class Client::FieldsController < ApplicationController
     end
     
     def set_venue
-      @venue = Venue.find(params[:venue_id]) # Pastikan venue_id tersedia di params
+      @venue = Venue.find_by(id: params[:venue_id])
+      unless @venue
+        redirect_to client_venues_path, alert: "Venue not found"
+      end
     end
 
-    # Only allow a list of trusted parameters through.
     def field_params
-      params.require(:field).permit(:name, :address, :date, :city, :image, :field_type, :price, :capacity, :description, :created_at, :updated_at, :venue_id)
+      params.require(:field).permit(:name, :address, :date, :city, :image, :field_type, :price, :capacity, :description, :created_at, :updated_at, :venue_id, :booking_id)
     end
 end

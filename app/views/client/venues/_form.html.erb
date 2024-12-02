@@ -21,39 +21,38 @@
     <% end %>
     
   <!-- Nama Venue -->
-  <div class="my-5">
+  <div class="mb-4">
     <%= form.label :name, "Nama Venue" %>
     <%= form.text_field :name, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
   </div>
 
   <!-- Alamat Venue -->
-  <div class="my-5">
+  <div class="mb-4">
     <%= form.label :address, "Alamat" %>
     <%= form.text_field :address, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
   </div>
 
-  
   <!-- Harga Venue -->
-  <div class="my-5">
+  <div class="mb-4">
     <%= form.label :price, "Harga" %>
     <%= form.number_field :price, step: 1000, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
   </div>
 
   <!-- Foto Venue -->
-  <div class="my-5">
+  <div class="mb-4">
     <%= form.label :image, "Foto Venue" %>
     <%= form.file_field :image, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
   </div>
 
   <!-- Deskripsi Venue -->
-  <div class="my-5">
+  <div class="mb-4">
     <%= form.label :description, "Deskripsi Venue" %>
     <%= form.text_area :description, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
   </div>
 
   <!-- Tombol Submit -->
   <div class="inline">
-    <%= form.submit "Daftarkan Venue", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+    <%= form.submit "Simpan Venue", class: "rounded-lg py-3 px-5 mb-6 bg-[#072243] text-white inline-block font-medium cursor-pointer" %>
   </div>
 
 <% end %>

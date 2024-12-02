@@ -1,37 +1,33 @@
 class Client::VenuesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_venue, only: %i[show edit update destroy]
+  before_action :set_venue, only: [:show, :edit, :update, :destroy]
 
-  # GET /venues or /venues.json
   def index
     @venues = Venue.all
     @cities = Field.select(:city).where(city: ['Jakarta', 'Bandung', 'Surabaya', 'Yogyakarta', 'Semarang']).distinct.pluck(:city)
     @field_types = ['Mini Soccer', 'Futsal']
   end
 
-  # GET /venues/1 or /venues/1.json
   def show
     @venue = Venue.find(params[:id])
-    @fields = @venue.fields 
+    @fields = @venue.fields
+    @selected_date = params[:date] || Date.today
+    @available_fields = @fields.select do |field|
+      field.schedules.any? { |schedule| schedule.date == @selected_date && !schedule.booked? }
+    end
   end
 
-  # GET /venues/new
   def new
-    @venue = Venue.new
+    @venue = current_user.venues.build
     @cities = ["Jakarta", "Bandung", "Surabaya", "Yogyakarta", "Semarang"]
     @field_types = ['Mini Soccer', 'Futsal']
   end
 
-  # GET /venues/1/edit
-  def edit
-  end
-
-  # POST /venues or /venues.json
   def create
-    @venue = current_user.venues.new(venue_params)
+    @venue = current_user.venues.build(venue_params)
     @cities = ["Jakarta", "Bandung", "Surabaya", "Yogyakarta", "Semarang"]
     @field_types = ['Mini Soccer', 'Futsal']
-    
+
     respond_to do |format|
       if @venue.save
         format.html { redirect_to client_venue_path(@venue), notice: 'Venue was successfully created.' }
@@ -43,7 +39,6 @@ class Client::VenuesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /venues/1 or /venues/1.json
   def update
     respond_to do |format|
       if @venue.update(venue_params)
@@ -56,10 +51,8 @@ class Client::VenuesController < ApplicationController
     end
   end
 
-  # DELETE /venues/1 or /venues/1.json
   def destroy
     @venue.destroy
-
     respond_to do |format|
       format.html { redirect_to client_venues_url, notice: 'Venue was successfully destroyed.' }
       format.json { head :no_content }
@@ -68,12 +61,10 @@ class Client::VenuesController < ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_venue
     @venue = Venue.find(params[:id])
   end
 
-  # Only allow a list of trusted parameters through.
   def venue_params
     params.require(:venue).permit(:name, :address, :image, :field_type, :price, :description, :venue_id)
   end

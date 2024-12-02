@@ -32,7 +32,7 @@
          </div>
 
          <!-- Link ke Halaman Edit dan Hapus -->
-         <%= link_to "Edit", edit_client_field_path(@field), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+         <%= link_to "Edit", edit_client_venue_field_path(venue_id: @venue.id, id: @field.id), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
          <%= link_to "Hapus Lapangan", client_field_path(@field), method: :delete, data: { confirm: "Apakah Anda yakin ingin menghapus lapangan ini?" }, class: "mt-2 rounded-lg py-3 px-5 bg-red-100 inline-block font-medium text-red-600" %>
       </div>
 

@@ -6,19 +6,20 @@
 
       <%= render "devise/shared/error_messages", resource: resource %>
 
-      <div class="flex justify-between mb-4">
-        <button class="w-10 h-10 flex items-center justify-center bg-[#072243] text-white rounded-full">
-          <i class="fab fa-facebook-f"></i>
+      <div class="flex justify-center space-x-4 mb-4">
+        <!-- Tombol Facebook -->
+        <button class="w-24 h-12 flex items-center justify-center border-2 border-gray-400 text-gray-800 rounded-full hover:bg-blue-100">
+          Facebook
         </button>
-        <button class="w-10 h-10 flex items-center justify-center bg-red-500 text-white rounded-full">
-          <i class="fab fa-google"></i>
+        
+        <!-- Tombol Google -->
+        <button class="w-24 h-12 flex items-center justify-center border-2 border-gray-400 text-gray-800 rounded-full hover:bg-red-100">
+          Google
         </button>
-        <button class="w-10 h-10 flex items-center justify-center bg-black text-white rounded-full">
-          <i class="fab fa-tiktok"></i>
-        </button>
-      </div>
+        </div>
 
-      <p class="text-gray-500 mb-4">atau gunakan email anda untuk registrasi</p>
+
+      <p class="text-gray-500 mb-4 text-center">Atau gunakan email anda untuk registrasi</p>
 
       <!-- Registration Form -->
       <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
@@ -47,7 +48,7 @@
 
       <!-- Additional Links -->
       <div class="text-center">
-        <p class="text-sm text-gray-500 mb-6">Sudah Memiliki Akun? <%= link_to "Masuk", new_session_path(resource_name), class: "text-[#072243] hover:underline" %></p>
+        <p class="text-sm text-gray-500 mb-18">Sudah Memiliki Akun? <%= link_to "Masuk", new_session_path(resource_name), class: "text-[#072243] hover:underline mb-8" %></p>
       </div>
     </div>
 

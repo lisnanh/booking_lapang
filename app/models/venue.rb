@@ -4,5 +4,8 @@ class Venue < ApplicationRecord
   
   belongs_to :user
   has_many :fields, dependent: :destroy
+  has_many :management_fields
   attribute :field_types, :string, array: true, default: []
+
+  has_one_attached :image
 end

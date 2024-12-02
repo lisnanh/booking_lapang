@@ -1,16 +1,17 @@
-<div class="w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-  <% end %>
+<div class="container mx-auto w-full p-6 pt-24 min-h-screen">
+  <div class="bg-white w-full shadow-lg rounded-lg p-6 mt-10">
+    <h1 class="text-3xl font-semibold text-gray-800">Dashboard</h1>
+    <div class="flex space-x-6 mt-4">
+      <a href="#" class="text-[#072243] font-semibold hover:underline">Booking</a>
+      <a href="#" class="text-[#072243] font-semibold hover:underline">Payment</a>
+    </div>
+    
+    <!-- Search Bar -->
+    <div class="mt-6">
+      <input type="text" placeholder="Cari booking disini [ENTER]" class="border rounded-lg w-full p-3 text-gray-700">
+    </div>
 
-  <% content_for :title, "Dashboards" %>
-aaaaaaaaaaaaaaaaaaaaaa
-  <div id="dashboards" class="min-w-full">
-    <% @dashboards.each do |dashboard| %>
-      <%= render dashboard %>
-      <p>
-        <%= link_to "Show this dashboard", dashboard, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-      </p>
-    <% end %>
+    <!-- Space kosong tambahan untuk mengisi halaman -->
+    <div class="mt-10 h-[60vh]"></div>
   </div>
 </div>

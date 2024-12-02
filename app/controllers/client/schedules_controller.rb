@@ -8,6 +8,7 @@ class Client::SchedulesController < ApplicationController
 
   # GET /schedules/1 or /schedules/1.json
   def show
+    @venue = Venue.find(params[:id])
   end
 
   # GET /schedules/new

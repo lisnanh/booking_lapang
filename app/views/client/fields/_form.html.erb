@@ -1,6 +1,6 @@
 <% if user_signed_in? %>
-<%= form_with(model: [:client, field], local: true) do |form| %>
-<! <%= form.hidden_field :venue_id, value: @venue.id %> >
+<%= form_with(model: [:client, @venue, field], local: true) do |form| %>
+<%= form.hidden_field :venue_id, value: @venue.id %> 
 
     <% if @field.errors.any? %>
       <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
@@ -61,8 +61,8 @@
       <%= form.file_field :image, class: "w-full p-2 border rounded-lg", accept: "image/*" %>
     </div>
 
-    <%= form.submit "Save Field", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+    <%= form.submit "Daftarkan Lapangan", class: "rounded-lg py-3 px-5 bg-[#072243] text-white inline-block font-medium cursor-pointer" %>
   <% end %>
 <% else %>
-  <p class="text-red-500">Anda harus login untuk menambahkan field.</p>
+  <p class="text-red-500">Anda harus login untuk menambahkan field!</p>
 <% end %>

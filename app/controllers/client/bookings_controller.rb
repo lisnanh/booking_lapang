@@ -1,7 +1,8 @@
 class Client::BookingsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_booking, only: [:show, :edit, :update, :destroy]
   before_action :set_field, only: [:new, :create]
+  before_action :set_venue, only: [:index]
+  before_action :set_booking, only: [:show, :edit, :update, :destroy] # Hanya untuk aksi show, edit, update, destroy
 
   def index
     @bookings = Booking.all
@@ -9,13 +10,25 @@ class Client::BookingsController < ApplicationController
 
   def show
     @booking = Booking.find(params[:id])
+    @venue = Venue.find(params[:id])
   end
 
   # GET /fields/:field_id/bookings/new
   def new
-    Rails.logger.debug "Field ID: #{params[:field_id]}"
-    @booking = @field.bookings.build
+    @venue = Venue.find(params[:venue_id])
+    @field = Field.find(params[:field_id])
+    @booking = @field.bookings.new
+  
+    @schedule = Schedule.find_by(field_id: @field.id)
+    if @schedule.nil?
+      redirect_to client_venues_path, alert: "Tidak ada jadwal untuk lapangan ini."
+    elsif @schedule.booked?
+      redirect_to client_venue_path(@schedule.client_field.client_venue), notice: "Lapangan ini sudah terbooking!"
+    else
+      @booking = ClientBooking.new(client_schedule: @schedule)
+    end
   end
+
 
   # POST /fields/:field_id/bookings
   def create
@@ -23,7 +36,7 @@ class Client::BookingsController < ApplicationController
     @booking.user_id = current_user.id
     respond_to do |format|
       if @booking.save
-        format.html { redirect_to new_client_payment_path(@booking), notice: "Booking was successfully created." }
+        format.html { redirect_to client_field_booking_path(@field, @booking), notice: "Booking was successfully created." }
         format.json { render :show, status: :created, location: @booking }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -60,12 +73,16 @@ class Client::BookingsController < ApplicationController
 
   private
 
+  def set_venue
+    @venue = Venue.find(params[:venue_id]) if params[:venue_id].present?
+  end
+
   def set_field
     @field = Field.find(params[:field_id])
   end  
 
   def set_booking
-    @booking = Booking.find(params[:id])
+    @booking = Booking.find(params[:id]) # Ini untuk show, edit, update, destroy
   end
 
   def booking_params

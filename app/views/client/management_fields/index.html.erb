@@ -1,50 +1,59 @@
-<!-- Fixed Position Plus Icon -->
-<%= link_to new_client_field_path, class: "fixed bottom-4 right-4 rounded-full p-2 shadow-lg z-50" do %>
-  <%= image_tag 'plus.png', alt: 'Add Field', class: 'w-12 h-12' %>
-<% end %>
+<div class="flex justify-center items-center mt-20 w-full border-gray-200">
+    <div class="container mx-auto px-4 mt-10">
+        <div class="flex items-center justify-between mt-10">
+            <h1 class="text-2xl font-bold text-right mt-6">Siap untuk sewakan lapangan anda?</h1>
+            <%= link_to new_client_venue_path(@venue), class: "bg-[#072243] hover:bg-[#072243] text-white font-bold py-2 px-4 rounded mt-8" do %>
+            Daftarkan Venue
+            <% end %>
+            </div>
+        <div class="mt-24">
+            <h2 class="text-2xl font-bold">Sewakan lapangan anda di BookingLapang</h2>
+            <div class="mt-4 flex justify-between">
+                <div class="flex flex-col">
+                    <h3 class="text-xl font-bold">Anda bisa memperoleh penghasilan</h3>
+                    <h2 class="text-5xl font-bold text-[#072243] mt-6">Rp. 250.000</h2>
+                    <p class="text-gray-600 mt-6">1 pertandingan dengan perkiraan Rp. 250.000 per pertandingan</p>
+                </div>
+                <div>
+               <%= link_to image_tag("maps.jpg", class: "w-96 h-96 rounded-md shadow-md"), "https://www.google.com/maps/search/?api=1&query=#{@venue.address}, #{@venue.city}", target: "_blank" %>
+             </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<!-- Container dengan padding top agar navbar tidak menutupi konten -->
-  <div class="container mx-auto p-6 pt-24">
+<!-- Container with top padding to avoid overlapping navbar -->
+<div class="container mx-auto p-6 pt-24">
   <div class="text-center mb-8">
     <h1 class="text-3xl font-semibold text-gray-800">Venue Anda</h1>
   </div>
+  <% @venues.each do |venue| %>
+    <div class="mb-8 p-6 border-b border-gray-300">
+      <h2 class="text-2xl font-semibold text-gray-700"><%= venue.name %></h2>
+      <p class="text-gray-600"><%= venue.address %></p>
+      <p class="text-gray-500"><%= venue.description %></p>
 
-  <!-- Tampilan grid untuk lapangan -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    <% if @management_fields.present? %>
-      <% @management_fields.each do |field| %>
-        <div class="border rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow cursor-pointer">
-          <%= link_to client_management_field_path(field), class: "block" do %>
-            <!-- Gambar Lapangan -->
-            <% if field.image.present? %>
-              <%= image_tag field.image, class: "w-full h-64 object-cover" %>
-            <% else %>
-              <p class="text-center text-gray-700">No file attached</p>
-            <% end %>
+      <div class="flex space-x-4 mt-4">
+        <%= link_to 'Edit Venue', edit_client_venue_path(venue), class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' %>
+        <%= link_to 'Delete Venue', client_venue_path(venue), method: :delete, data: { confirm: 'Are you sure?' }, class: 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded' %>
+      </div>
 
-            <!-- Informasi Lapangan -->
-            <div class="p-4 bg-white">
-              <!-- Tipe Lapangan -->
-              <p class="text-sm text-[#072243] font-semibold"><%= field.field_type %></p>
-
-              <!-- Nama Lapangan -->
-              <h2 class="font-semibold text-gray-700 text-lg"><%= field.name %></h2>
-
-              <!-- Alamat Lapangan -->
-              <p class="text-sm text-gray-500"><%= field.address %></p>
-
-              <!-- Kota -->
-              <h2 class="text-sm text-gray-500"><%= field.city %></h2>
-
-              <!-- Harga -->
-              <p class="text-sm text-gray-500 mt-2">Mulai Dari <span class="font-semibold"><%= number_to_currency(field.price, unit: "Rp. ") %>/Sesi</span></p>
+      <h3 class="mt-6 text-xl font-semibold text-gray-700">Fields:</h3>
+      <ul class="mt-2 space-y-2">
+        <% venue.fields.each do |field| %>
+          <li class="flex justify-between items-center p-4 bg-gray-100 rounded-md shadow-sm">
+            <span><%= field.name %> - <%= field.field_type %></span>
+            <div class="flex space-x-4">
+              <%= link_to 'Edit Field', edit_client_venue_field_path(venue, field), class: 'bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-3 rounded' %>
+              <%= link_to 'Delete Field', client_venue_field_path(venue, field), method: :delete, data: { confirm: 'Are you sure?' }, class: 'bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded' %>
             </div>
-          <% end %>
-        </div>
-      <% end %>
-    <% else %>
-      <p class="text-gray-600">No fields found.</p>
-    <% end %>
-  </div>
-  </div>
+          </li>
+        <% end %>
+      </ul>
+
+      <div class="mt-4">
+        <%= link_to 'Add New Field', new_client_venue_field_path(venue), class: 'bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded' %>
+      </div>
+    </div>
+  <% end %>
 </div>

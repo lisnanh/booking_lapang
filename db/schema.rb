@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_18_172519) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_15_083611) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -102,7 +102,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_18_172519) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "venue_id"
     t.index ["user_id"], name: "index_management_fields_on_user_id"
+    t.index ["venue_id"], name: "index_management_fields_on_venue_id"
   end
 
   create_table "payments", force: :cascade do |t|
@@ -180,6 +182,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_18_172519) do
   add_foreign_key "fields", "users"
   add_foreign_key "fields", "venues"
   add_foreign_key "management_fields", "users"
+  add_foreign_key "management_fields", "venues"
   add_foreign_key "payments", "bookings"
   add_foreign_key "schedules", "fields"
   add_foreign_key "sparrings", "fields"

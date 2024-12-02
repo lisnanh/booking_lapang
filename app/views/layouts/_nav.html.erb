@@ -5,29 +5,28 @@
 
     <!-- Navbar berdasarkan jenis user -->
     <% if current_user.nil? %>
-    <!-- Dropdown User before login-->
-      <div class="hidden md:flex space-x-6 items-center">
-        <button class="text-white focus:outline-none" id="user-menu-button">
-        <%= image_tag 'user.svg', alt: 'User Icon', class: 'h-8 w-8 rounded-full' %>
-        </button>
-        <div id="user-menu-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl z-20 hidden">
-        <%= link_to 'Daftar', new_user_registration_path, class: 'block px-4 py-2 text-gray-800 hover:bg-gray-100' %>
-        <%= link_to 'Masuk', new_user_session_path, class: 'block px-4 py-2 text-gray-800 hover:bg-gray-100' %>
-        </div>
-        </div>
-      </div>  
+    <div class="hidden md:flex space-x-4 items-center">
+    <%= link_to 'Daftar', new_user_registration_path, class: 'px-4 py-2 bg-white text-blue-900 font-semibold rounded-full border border-blue-900 hover:bg-blue-100' %>
+    <%= link_to 'Masuk', new_user_session_path, class: 'px-4 py-2 bg-white text-blue-900 font-semibold rounded-full border border-blue-900 hover:bg-blue-100' %>
+  </div>
+   
 
     <% else %>
       <!-- Navbar Client: Semua opsi + Dropdown User -->
       <div class="hidden md:flex space-x-6 items-center">
       <%= link_to 'Venue', client_venues_path, class: 'text-white hover:text-gray-200' %>  
-      <%= link_to 'Sewa Lapang', client_fields_path, class: 'text-white hover:text-gray-200' %>
-      <%= link_to 'Kelola Venue', client_management_fields_path, class: 'text-white hover:text-gray-200' %>
+      
+      <!-- Kelola Venue -->
+      <% if (action_name == 'edit' || action_name == 'show') && @venue.present? %>
+      <%= link_to 'Kelola Venue', client_venue_management_fields_path(venue_id: @venue.id), class: 'text-white hover:text-gray-200' %>
+      <% else %>
+      <span class="text-gray-400">Tidak ada venue yang dipilih</span>
+      <% end %>
 
         <!-- Dropdown User after login-->
         <div class="relative">
         <button class="text-white focus:outline-none" id="user-menu-button">
-          <%= image_tag 'user.svg', alt: 'User Icon', class: 'h-8 w-8 rounded-full' %>
+          <%= image_tag 'user.png', alt: 'User Icon', class: 'h-10 w-10 rounded-full' %>
         </button>
         <div id="user-menu-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl z-20 hidden">
           <%= link_to 'Profil', edit_user_registration_path, class: 'block px-4 py-2 text-gray-800 hover:bg-gray-100' %>
@@ -37,20 +36,36 @@
       </div>  
       <% end %>
 
-  <!-- Mobile Menu Button -->
-  <div class="md:hidden flex items-center">
-   <button class="text-white focus:outline-none">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-      </svg>
-    </button>
-  </div>
-  </div>
+      <!-- Mobile Menu Button -->
+      <div class="md:hidden flex items-center">
+        <button class="text-white focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
 </nav>
 
+<!-- Navbar Management muncul setelah "Kelola Venue" diklik -->
+<div id="management-navbar" class="hidden">
+<% if @venue.present? %>
+  <%= render 'layouts/management_navbar' %>
+<% else %>
+  <p>No venue selected.</p>
+<% end %>
+</div>
+
 <script>
-document.getElementById('user-menu-button').addEventListener('click', function() {
+  // Toggle dropdown user menu
+  document.getElementById('user-menu-button').addEventListener('click', function() {
     var dropdown = document.getElementById('user-menu-dropdown');
     dropdown.classList.toggle('hidden');
+  });
+
+  // Toggle management navbar
+  document.getElementById('kelola-venue').addEventListener('click', function() {
+    var managementNavbar = document.getElementById('management-navbar');
+    managementNavbar.classList.toggle('hidden');
   });
 </script>

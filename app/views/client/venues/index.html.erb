@@ -2,11 +2,6 @@
   <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block"><%= notice %></p>
 <% end %>
 
-<!-- Fixed Position Plus Icon -->
-<%= link_to new_client_venue_path, class: "fixed bottom-4 right-4 rounded-full p-2 shadow-lg z-50" do %>
-  <%= image_tag 'plus.png', alt: 'Add Venue', class: 'w-12 h-12' %>
-<% end %>
-
 <div class="container mx-auto p-6 pt-24">
   <div class="text-center mb-8">
     <h1 class="text-3xl font-semibold text-gray-800">Booking Venue Terbaik</h1>
@@ -14,44 +9,46 @@
 
   <!-- Search Bar -->
   <%= form_with url: client_venues_path, method: :get, local: true, class: "flex items-center bg-[#F8F9FA] p-4 rounded-full shadow-md" do |form| %>
-  <!-- Nama Venue -->
-  <%= form.text_field :name, value: params.dig(:query, :name), placeholder: "Nama Venue", class: "px-4 py-2 border border-[#072243] rounded-l-full w-1/3 text-[#072243] placeholder-[#072243] focus:outline-none focus:border-blue-500" %>
-  
-  <!-- Kota -->
-  <%= form.select :city, options_for_select(@cities, params.dig(:query, :city)), { prompt: 'Pilih Kota' }, class: "px-4 py-2 border border-[#072243] w-1/3 text-[#072243] rounded-none" %>
-  
-  <!-- Jenis Lapangan -->
-  <%= form.select :field_type, options_for_select(@field_types, params.dig(:query, :field_type)), { prompt: 'Pilih Jenis Lapangan' }, class: "px-4 py-2 border border-[#072243] w-1/3 text-[#072243] rounded-none" %>
-  
-  <!-- Button Search -->
-  <%= form.submit class: "bg-[#072243] text-white px-4 py-2 rounded-r-full flex items-center justify-center cursor-pointer", style: "background-image: url(#{asset_path('')}); background-repeat: no-repeat; background-position: center; background-size: contain;" %>
-<% end %>
+    <!-- Nama Venue -->
+    <%= form.text_field :name, value: params.dig(:query, :name), placeholder: "Nama Venue", class: "px-4 py-2 border border-[#072243] rounded-l-full w-1/3 text-[#072243] placeholder-[#072243] focus:outline-none focus:border-blue-500" %>
 
-<!-- Tampilan Venue -->
-<div class="grid grid-cols-3 gap-6">
-  <% @venues.each do |venue| %>
-    <div class="border rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow cursor-pointer">
-      <%= link_to client_venue_path(venue), class: "block" do %>
-                        
-        <!-- Informasi Venue -->
-        <div class="p-4 bg-white">
-        <!-- Nama Venue -->
-        <h2 class="font-semibold text-gray-700 text-lg"><%= venue.name %></h2>
-        
-        <!-- Alamat Venue -->
-        <p class="text-sm text-gray-500"><%= venue.address %></p>
+    <!-- Kota -->
+    <%= form.select :city, options_for_select(@cities, params.dig(:query, :city)), { prompt: 'Pilih Kota' }, class: "px-4 py-2 border border-[#072243] w-1/3 text-[#072243] rounded-none" %>
 
-        <!-- Kota -->
-        <h2 class="text-sm text-gray-500"><%= venue.city %></h2>          
-          
-        <!-- Harga -->
-        <p class="text-sm text-gray-500 mt-2">Mulai Dari <span class="font-semibold"><%= number_to_currency(venue.price, unit: "Rp. ") %>/Sesi</span></p>
-          
-        </div>
-      <% end %>
-    </div>
+    <!-- Jenis Lapangan -->
+    <%= form.select :field_type, options_for_select(@field_types, params.dig(:query, :field_type)), { prompt: 'Pilih Jenis Lapangan' }, class: "px-4 py-2 border border-[#072243] w-1/3 text-[#072243] rounded-none" %>
+
+    <!-- Button Search -->
+    <%= form.submit class: "bg-[#072243] text-white px-4 py-2 rounded-r-full flex items-center justify-center cursor-pointer", style: "background-image: url(#{asset_path('')}); background-repeat: no-repeat; background-position: center; background-size: contain;" %>
   <% end %>
-</div>
 
-</div>
+  <!-- Tampilan Venue -->
+  <div class="grid grid-cols-3 gap-6">
+    <% @venues.each do |venue| %>
+      <div class="border rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow cursor-pointer">
+        <%= link_to client_venue_path(venue), class: "block" do %>
+          <!-- Gambar Venue -->
+          <% if venue.image.attached? %>
+            <%= image_tag url_for(venue.image), class: "w-66 h-64 object-cover" %>
+          <% else %>
+            <p class="text-center text-gray-700">No file attached</p>
+          <% end %>
+
+          <!-- Informasi Venue -->
+          <div class="p-4 bg-white">
+            <!-- Nama Venue -->
+            <h2 class="font-semibold text-gray-700 text-lg"><%= venue.name %></h2>
+
+            <!-- Alamat Venue -->
+            <p class="text-sm text-gray-500"><%= venue.address %></p>
+            <!-- Kota -->
+            <h2 class="text-sm text-gray-500"><%= venue.city %></h2>
+
+            <!-- Harga -->
+            <p class="text-sm text-gray-500 mt-2">Mulai Dari <span class="font-semibold"><%= number_to_currency(venue.price, unit: "Rp. ") %>/Sesi</span></p>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 </div>

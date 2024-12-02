@@ -1,7 +1,6 @@
-<%= form_with(model: @booking, url: client_field_bookings_path(@field), local: true) do |form| %>
+<%= form_with(model: @booking, url: client_venue_field_bookings_path(@venue, @field), local: true) do |form| %>
   <% if @booking.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
-      <h2><%= pluralize(@booking.errors.count, "error") %> prohibited this booking from being saved:</h2>
+    <div class="alert alert-danger">
       <ul>
         <% @booking.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -18,15 +17,17 @@
         
         <!-- Check-In Date -->
         <div class="mb-4">
-        <%= form.label :check_in_date, "Tanggal Check-In", class: "block text-gray-700 font-semibold mb-2" %>
-        <%= form.date_field :check_in_date, class: "w-full px-4 py-2 border rounded-md bg-gray-100" %>
+          <%= form.label :check_in_date, "Tanggal Check-In", class: "block text-gray-700 font-semibold mb-2" %>
+          <%= form.date_field :check_in_date, class: "w-full px-4 py-2 border rounded-md bg-gray-100" %>
         </div>
 
         <!-- Check-Out Date -->
         <div class="mb-4">
-        <%= form.label :check_out_date, "Tanggal Check-Out", class: "block text-gray-700 font-semibold mb-2" %>
-        <%= form.date_field :check_out_date, class: "w-full px-4 py-2 border rounded-md bg-gray-100" %>
+          <%= form.label :check_out_date, "Tanggal Check-Out", class: "block text-gray-700 font-semibold mb-2" %>
+          <%= form.date_field :check_out_date, class: "w-full px-4 py-2 border rounded-md bg-gray-100" %>
         </div>
+
+        <!-- Additional Fields (Nama, Email, No Handphone) -->
         <div class="mb-4">
           <label class="block text-gray-700">Nama</label>
           <input type="text" value="Mawar" class="w-full px-4 py-2 border rounded-md bg-gray-100" disabled>
@@ -39,6 +40,7 @@
           <label class="block text-gray-700">No Handphone</label>
           <input type="text" value="0896000000" class="w-full px-4 py-2 border rounded-md bg-gray-100" disabled>
         </div>
+
         <button type="submit" class="w-full bg-blue-900 text-white py-2 rounded-md">Pilih Metode Pembayaran</button>
       </div>
 

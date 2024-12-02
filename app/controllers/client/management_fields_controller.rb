@@ -2,14 +2,15 @@ class Client::ManagementFieldsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_management_field, only: [:edit, :update, :destroy]
   before_action :set_field, only: [:new, :create]
-
+  before_action :set_venue, only: [:index, :show, :edit, :update, :destroy]
+  
   def index
-    if current_user.id?
-      # Jika user adalah client, hanya tampilkan field yang dimiliki oleh client tersebut
-      @management_fields = current_user.fields
-    else
-      # Jika user bukan client, tampilkan semua field
-      @fields = Field.all
+    @venues = current_user.venues.includes(:fields)
+    @management_fields = ManagementField.where(venue_id: @venue.id)
+
+    if current_user.present?
+      # Hanya tampilkan field yang dimiliki oleh current user melalui venue
+      @management_fields = current_user.fields.includes(:venue)
     end
   
     # Filter by name if present
@@ -37,6 +38,12 @@ class Client::ManagementFieldsController < ApplicationController
   end
 
   def create
+    @field = Field.new(field_params)
+    if @field.save
+      redirect_to client_venue_management_fields_path(venue_id: @field.venue_id), notice: 'Field berhasil ditambahkan.'
+    else
+      render :new # Tampilkan form dengan error
+    end
     @management_field = current_user.management_fields.new(management_field_params)
     if @management_field.save
       redirect_to client_management_fields_path, notice: 'Management field was successfully created.'
@@ -62,6 +69,12 @@ class Client::ManagementFieldsController < ApplicationController
   end
 
   private
+
+  def set_venue
+    @venue = Venue.find(params[:venue_id]) # Pastikan venue_id ada dalam params
+  rescue ActiveRecord::RecordNotFound
+    redirect_to client_venues_path, alert: "Venue tidak ditemukan."
+  end
 
   def set_field
     @field = Field.find(params[:field_id])
